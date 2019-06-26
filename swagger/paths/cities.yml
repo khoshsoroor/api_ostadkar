@@ -1,0 +1,57 @@
+get:
+  tags:
+    - operators
+    - providers
+  summary: List Cities
+  operationId: listCities
+  description: Returns list of cities available
+  produces:
+    - application/json
+    - application/msgpack
+    - application/cbor
+
+  parameters:
+    - in: header
+      name: Accept
+      type: string
+      required: false
+  responses:
+    200:
+      description: list of cities with attributes
+      schema:
+        type: array
+        items:
+          $ref: '#/definitions/CityInfo'
+    404:
+      description: No city found
+post:
+  tags:
+    - operators
+  summary: Registers new city
+  operationId: registerCity
+  description: Registers an city with its data
+  consumes:
+    - application/json
+    - application/msgpack
+    - application/cbor
+  produces:
+    - application/json
+    - application/msgpack
+    - application/cbor
+  parameters:
+    - in: body
+      required: true
+      name: cityInfo
+      schema:
+        $ref: '#/definitions/CityInfo'
+  responses:
+    201:
+      description: City registered successfully
+      schema:
+        type: object
+        properties:
+          sid:
+            type: string
+    400:
+      description: City data invalid
+      schema:

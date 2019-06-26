@@ -1,0 +1,58 @@
+get:
+  tags:
+    - operators
+    - providers
+  summary: List Zones
+  operationId: listZones
+  description: Returns list of zones available
+  produces:
+    - application/json
+    - application/msgpack
+    - application/cbor
+
+  parameters:
+    - in: header
+      name: Accept
+      type: string
+      required: false
+  responses:
+    200:
+      description: list of zones with attributes
+      schema:
+        type: array
+        items:
+          $ref: '#/definitions/ZoneInfo'
+    404:
+      description: No zone found
+post:
+  tags:
+    - operators
+  summary: Registers new zone
+  operationId: registerZone
+  description: Registers an zone with its data
+  consumes:
+    - application/json
+    - application/msgpack
+    - application/cbor
+  produces:
+    - application/json
+    - application/msgpack
+    - application/cbor
+  parameters:
+    - in: body
+      required: true
+      name: zoneInfo
+      schema:
+        $ref: '#/definitions/ZoneInfo'
+  responses:
+    201:
+      description: Zone registered successfully
+      schema:
+        type: object
+        properties:
+          sid:
+            type: string
+    400:
+      description: Zone data invalid
+      schema:
+        $ref: '#/definitions/ErrorInfo'

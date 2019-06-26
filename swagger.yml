@@ -1,0 +1,1015 @@
+swagger: '2.0'
+schemes:
+  - http
+host: 'localhost:5000'
+info:
+  description: RESTful API for Ostadkar Backend
+  version: 0.0.1
+  title: Ostadkar REST API
+  contact:
+    email: na.farahzadi@gmail.com
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+tags:
+  - name: operators
+    description: Secured Admin/Operator calls
+  - name: public
+    description: Operations available to everyone
+paths:
+  /services:
+    get:
+      tags:
+        - public
+      summary: List Services
+      operationId: listServices
+      description: Returns list of services available
+      produces:
+        - application/json
+        - application/msgpack
+        - application/cbor
+      parameters:
+        - in: header
+          name: Accept
+          type: string
+          required: false
+      responses:
+        '200':
+          description: list of services with attributes
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/ServiceInfo'
+        '404':
+          description: No service found
+    post:
+      tags:
+        - operators
+      summary: Registers new service
+      operationId: registerService
+      description: Registers an service with its data
+      consumes:
+        - application/json
+        - application/msgpackmak
+        - application/cbor
+      produces:
+        - application/json
+        - application/msgpack
+        - application/cbor
+      parameters:
+        - in: body
+          required: true
+          name: serviceInfo
+          schema:
+            $ref: '#/definitions/ServiceInfo'
+      responses:
+        '201':
+          description: Service registered successfully
+          schema:
+            type: object
+            properties:
+              sid:
+                type: string
+        '400':
+          description: Service data invalid
+          schema:
+            $ref: '#/definitions/ErrorInfo'
+  '/services/{slug}':
+    get:
+      tags:
+        - public
+      summary: Gets some specific service details
+      operationId: getServiceInfo
+      description: Gets a tracking code and return corresponding service details
+      produces:
+        - application/json
+        - application/msgpack
+        - application/cbor
+      parameters:
+        - in: path
+          required: true
+          name: slug
+          type: string
+      responses:
+        '200':
+          description: Returns service with specified slug
+          schema:
+            $ref: '#/definitions/ServiceInfo'
+        '404':
+          description: No service exists with this slug
+          schema:
+            $ref: '#/definitions/ErrorInfo'
+    put:
+      tags:
+        - operators
+      summary: Modifies speicified service information
+      operationId: editServiceInfo
+      description: 'Modifies sefvice name, description and attributes.'
+      produces:
+        - application/json
+        - application/msgpack
+        - application/cbor
+      consumes:
+        - application/json
+        - application/msgpack
+        - application/cbor
+      parameters:
+        - in: path
+          name: slug
+          required: true
+          type: string
+          format: uuid
+        - in: body
+          name: serviceInfo
+          required: true
+          schema:
+            $ref: '#/definitions/ServiceInfo'
+      responses:
+        '204':
+          description: Successfully modified the service
+        '400':
+          description: Invalid service data
+          schema:
+            $ref: '#/definitions/ErrorInfo'
+        '404':
+          description: There is no service with this slug
+    delete:
+      tags:
+        - operators
+      summary: Disables a single service specified by slug
+      operationId: disableService
+      description: Cancels a specific service with slug
+      parameters:
+        - in: path
+          name: slug
+          required: true
+          type: string
+      responses:
+        '204':
+          description: Successfully disabled the service
+        '404':
+          description: The is no service with this slug.
+          schema:
+            $ref: '#/definitions/ErrorInfo'
+        '406':
+          description: This service could not be disabled.
+          schema:
+            $ref: '#/definitions/ErrorInfo'
+  /skills:
+    get:
+      tags:
+        - operators
+        - providers
+      summary: List Skills
+      operationId: listSkills
+      description: Returns list of skills available
+      produces:
+        - application/json
+        - application/msgpack
+        - application/cbor
+      parameters:
+        - in: header
+          name: Accept
+          type: string
+          required: false
+      responses:
+        '200':
+          description: list of skills with attributes
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/SkillInfo'
+        '404':
+          description: No skill found
+    post:
+      tags:
+        - operators
+      summary: Registers new skill
+      operationId: registerSkill
+      description: Registers an skill with its data
+      consumes:
+        - application/json
+        - application/msgpack
+        - application/cbor
+      produces:
+        - application/json
+        - application/msgpack
+        - application/cbor
+      parameters:
+        - in: body
+          required: true
+          name: skillInfo
+          schema:
+            $ref: '#/definitions/SkillInfo'
+      responses:
+        '201':
+          description: Skill registered successfully
+          schema:
+            type: object
+            properties:
+              sid:
+                type: string
+        '400':
+          description: Skill data invalid
+          schema:
+            $ref: '#/definitions/ErrorInfo'
+  '/skills/{slug}':
+    get:
+      tags:
+        - customers
+        - providers
+        - operators
+      summary: Gets some specific skill details
+      operationId: getSkillInfo
+      description: Gets a tracking code and return corresponding skill details
+      produces:
+        - application/json
+        - application/msgpack
+        - application/cbor
+      parameters:
+        - in: path
+          required: true
+          name: slug
+          type: string
+      responses:
+        '200':
+          description: Returns skill with specified slug
+          schema:
+            $ref: '#/definitions/SkillInfo'
+        '404':
+          description: No skill exists with this slug
+          schema:
+            $ref: '#/definitions/ErrorInfo'
+    put:
+      tags:
+        - operators
+      summary: Modifies speicified skill information
+      operationId: editSkillInfo
+      description: 'Modifies sefvice name, description and attributes.'
+      produces:
+        - application/json
+        - application/msgpack
+        - application/cbor
+      consumes:
+        - application/json
+        - application/msgpack
+        - application/cbor
+      parameters:
+        - in: path
+          name: slug
+          required: true
+          type: string
+        - in: body
+          name: skillInfo
+          required: true
+          schema:
+            $ref: '#/definitions/SkillInfo'
+      responses:
+        '204':
+          description: Successfully modified the skill
+        '400':
+          description: Invalid skill data
+          schema:
+            $ref: '#/definitions/ErrorInfo'
+        '404':
+          description: There is no skill with this slug
+    delete:
+      tags:
+        - operators
+      summary: Disables a single skill specified by slug
+      operationId: disableSkill
+      description: Cancels a specific skill with slug
+      parameters:
+        - in: path
+          name: slug
+          required: true
+          type: string
+      responses:
+        '204':
+          description: Successfully disabled the skill
+        '404':
+          description: The is no skill with this slug.
+          schema:
+            $ref: '#/definitions/ErrorInfo'
+        '406':
+          description: This skill could not be disabled.
+          schema:
+            $ref: '#/definitions/ErrorInfo'
+  /cities:
+    get:
+      tags:
+        - operators
+        - providers
+      summary: List Cities
+      operationId: listCities
+      description: Returns list of cities available
+      produces:
+        - application/json
+        - application/msgpack
+        - application/cbor
+      parameters:
+        - in: header
+          name: Accept
+          type: string
+          required: false
+      responses:
+        '200':
+          description: list of cities with attributes
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/CityInfo'
+        '404':
+          description: No city found
+    post:
+      tags:
+        - operators
+      summary: Registers new city
+      operationId: registerCity
+      description: Registers an city with its data
+      consumes:
+        - application/json
+        - application/msgpack
+        - application/cbor
+      produces:
+        - application/json
+        - application/msgpack
+        - application/cbor
+      parameters:
+        - in: body
+          required: true
+          name: cityInfo
+          schema:
+            $ref: '#/definitions/CityInfo'
+      responses:
+        '201':
+          description: City registered successfully
+          schema:
+            type: object
+            properties:
+              sid:
+                type: string
+        '400':
+          description: City data invalid
+          schema: null
+  '/cities/{slug}':
+    get:
+      tags:
+        - customers
+        - providers
+        - operators
+      summary: Gets some specific city details
+      operationId: getCityInfo
+      description: Gets a tracking code and return corresponding city details
+      produces:
+        - application/json
+        - application/msgpack
+        - application/cbor
+      parameters:
+        - in: path
+          required: true
+          name: slug
+          type: string
+      responses:
+        '200':
+          description: Returns city with specified slug
+          schema:
+            $ref: '#/definitions/CityInfo'
+        '404':
+          description: No city exists with this slug
+          schema:
+            $ref: '#/definitions/ErrorInfo'
+    put:
+      tags:
+        - operators
+      summary: Modifies speicified skill information
+      operationId: editCityInfo
+      description: 'Modifies sefvice name, description and attributes.'
+      produces:
+        - application/json
+        - application/msgpack
+        - application/cbor
+      consumes:
+        - application/json
+        - application/msgpack
+        - application/cbor
+      parameters:
+        - in: path
+          name: slug
+          required: true
+          type: string
+        - in: body
+          name: skillInfo
+          required: true
+          schema:
+            $ref: '#/definitions/CityInfo'
+      responses:
+        '204':
+          description: Successfully modified the skill
+        '400':
+          description: Invalid skill data
+          schema:
+            $ref: '#/definitions/ErrorInfo'
+        '404':
+          description: There is no skill with this slug
+    delete:
+      tags:
+        - operators
+      summary: Disables a single skill specified by slug
+      operationId: disableCity
+      description: Cancels a specific skill with slug
+      parameters:
+        - in: path
+          name: slug
+          required: true
+          type: string
+      responses:
+        '204':
+          description: Successfully disabled the skill
+        '404':
+          description: The is no skill with this slug.
+          schema:
+            $ref: '#/definitions/ErrorInfo'
+        '406':
+          description: This skill could not be disabled.
+          schema:
+            $ref: '#/definitions/ErrorInfo'
+  /zones:
+    get:
+      tags:
+        - operators
+        - providers
+      summary: List Zones
+      operationId: listZones
+      description: Returns list of zones available
+      produces:
+        - application/json
+        - application/msgpack
+        - application/cbor
+      parameters:
+        - in: header
+          name: Accept
+          type: string
+          required: false
+      responses:
+        '200':
+          description: list of zones with attributes
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/ZoneInfo'
+        '404':
+          description: No zone found
+    post:
+      tags:
+        - operators
+      summary: Registers new zone
+      operationId: registerZone
+      description: Registers an zone with its data
+      consumes:
+        - application/json
+        - application/msgpack
+        - application/cbor
+      produces:
+        - application/json
+        - application/msgpack
+        - application/cbor
+      parameters:
+        - in: body
+          required: true
+          name: zoneInfo
+          schema:
+            $ref: '#/definitions/ZoneInfo'
+      responses:
+        '201':
+          description: Zone registered successfully
+          schema:
+            type: object
+            properties:
+              sid:
+                type: string
+        '400':
+          description: Zone data invalid
+          schema:
+            $ref: '#/definitions/ErrorInfo'
+  '/zones/{slug}':
+    get:
+      tags:
+        - customers
+        - providers
+        - operators
+      summary: Gets some specific zone details
+      operationId: getZoneInfo
+      description: Gets a tracking code and return corresponding zone details
+      produces:
+        - application/json
+        - application/msgpack
+        - application/cbor
+      parameters:
+        - in: path
+          required: true
+          name: slug
+          type: string
+      responses:
+        '200':
+          description: Returns zone with specified slug
+          schema:
+            $ref: '#/definitions/ZoneInfo'
+        '404':
+          description: No zone exists with this slug
+          schema:
+            $ref: '#/definitions/ErrorInfo'
+    put:
+      tags:
+        - operators
+      summary: Modifies speicified skill information
+      operationId: editZoneInfo
+      description: 'Modifies sefvice name, description and attributes.'
+      produces:
+        - application/json
+        - application/msgpack
+        - application/cbor
+      consumes:
+        - application/json
+        - application/msgpack
+        - application/cbor
+      parameters:
+        - in: path
+          name: slug
+          required: true
+          type: string
+        - in: body
+          name: skillInfo
+          required: true
+          schema:
+            $ref: '#/definitions/ZoneInfo'
+      responses:
+        '204':
+          description: Successfully modified the skill
+        '400':
+          description: Invalid skill data
+          schema:
+            $ref: '#/definitions/ErrorInfo'
+        '404':
+          description: There is no skill with this slug
+    delete:
+      tags:
+        - operators
+      summary: Disables a single skill specified by slug
+      operationId: disableZone
+      description: Cancels a specific skill with slug
+      parameters:
+        - in: path
+          name: slug
+          required: true
+          type: string
+      responses:
+        '204':
+          description: Successfully disabled the skill
+        '404':
+          description: The is no skill with this slug.
+          schema:
+            $ref: '#/definitions/ErrorInfo'
+        '406':
+          description: This skill could not be disabled.
+          schema:
+            $ref: '#/definitions/ErrorInfo'
+  /provides:
+    get:
+      tags:
+        - operators
+        - providers
+      summary: List Provides
+      operationId: listProvides
+      description: Returns list of provides available
+      produces:
+        - application/json
+        - application/msgpack
+        - application/cbor
+      parameters:
+        - in: header
+          name: Accept
+          type: string
+          required: false
+      responses:
+        '200':
+          description: list of provides with attributes
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/ProvideInfo'
+        '404':
+          description: No provide found
+    post:
+      tags:
+        - operators
+      summary: Registers new provide
+      operationId: registerProvide
+      description: Registers an provide with its data
+      consumes:
+        - application/json
+        - application/msgpack
+        - application/cbor
+      produces:
+        - application/json
+        - application/msgpack
+        - application/cbor
+      parameters:
+        - in: body
+          required: true
+          name: provideInfo
+          schema:
+            $ref: '#/definitions/ProvideInfo'
+      responses:
+        '201':
+          description: Provide registered successfully
+          schema:
+            type: object
+            properties:
+              sid:
+                type: string
+        '400':
+          description: Provide data invalid
+          schema:
+            $ref: '#/definitions/ErrorInfo'
+  '/provides/{slug}':
+    get:
+      tags:
+        - customers
+        - providers
+        - operators
+      summary: Gets some specific provide details
+      operationId: getProvideInfo
+      description: Gets a tracking code and return corresponding provide details
+      produces:
+        - application/json
+        - application/msgpack
+        - application/cbor
+      parameters:
+        - in: path
+          required: true
+          name: slug
+          type: string
+      responses:
+        '200':
+          description: Returns provide with specified slug
+          schema:
+            $ref: '#/definitions/ProvideInfo'
+        '404':
+          description: No provide exists with this slug
+          schema:
+            $ref: '#/definitions/ErrorInfo'
+    put:
+      tags:
+        - operators
+      summary: Modifies speicified skill information
+      operationId: editProvideInfo
+      description: 'Modifies sefvice name, description and attributes.'
+      produces:
+        - application/json
+        - application/msgpack
+        - application/cbor
+      consumes:
+        - application/json
+        - application/msgpack
+        - application/cbor
+      parameters:
+        - in: path
+          name: slug
+          required: true
+          type: string
+        - in: body
+          name: skillInfo
+          required: true
+          schema:
+            $ref: '#/definitions/ProvideInfo'
+      responses:
+        '204':
+          description: Successfully modified the skill
+        '400':
+          description: Invalid skill data
+          schema:
+            $ref: '#/definitions/ErrorInfo'
+        '404':
+          description: There is no skill with this slug
+    delete:
+      tags:
+        - operators
+      summary: Disables a single skill specified by slug
+      operationId: disableProvide
+      description: Cancels a specific skill with slug
+      parameters:
+        - in: path
+          name: slug
+          required: true
+          type: string
+      responses:
+        '204':
+          description: Successfully disabled the skill
+        '404':
+          description: The is no skill with this slug.
+          schema:
+            $ref: '#/definitions/ErrorInfo'
+        '406':
+          description: This skill could not be disabled.
+          schema:
+            $ref: '#/definitions/ErrorInfo'
+  /categories:
+    get:
+      tags:
+        - public
+      summary: List Categories
+      operationId: listCategories
+      description: Returns list of categories available
+      produces:
+        - application/json
+        - application/msgpack
+        - application/cbor
+      parameters:
+        - in: header
+          name: Accept
+          type: string
+          required: false
+      responses:
+        '200':
+          description: list of categories with attributes
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/CategoryInfo'
+        '404':
+          description: No category found
+definitions:
+  ErrorInfo:
+    title: error
+    description: Error description
+    type: object
+    required:
+      - code
+      - message
+    properties:
+      code:
+        type: number
+        format: integer
+      message:
+        type: string
+      uri:
+        type: string
+  ServiceInfo:
+    description: Provider service information
+    title: service
+    type: object
+    required:
+      - id
+      - slug
+      - title
+      - created_at
+      - is_active
+    properties:
+      id:
+        type: number
+        description: Unique identifier of the service
+        format: int32
+        example: 123
+      slug:
+        type: string
+        maxLength: 25
+        description: Alphanumeric url-valid string for natural accessing the item
+        example: nezafat-manzel
+      title:
+        type: string
+        maxLength: 160
+        description: Title of the service
+        example: نظافت منزل
+      created_at:
+        type: string
+        format: date-time
+        example: '2018-09-05T23:11'
+      updated_at:
+        type: string
+        format: date-time
+        example: '2018-09-06T23:11'
+      is_active:
+        type: boolean
+        example: true
+  SkillInfo:
+    description: Provider skill information
+    title: skill
+    type: object
+    required:
+      - id
+      - slug
+      - title
+      - created_at
+      - is_active
+    properties:
+      id:
+        type: number
+        description: Unique identifier of the skill
+        format: int32
+        example: 123
+      slug:
+        type: string
+        maxLength: 25
+        description: Alphanumeric url-valid string for natural accessing the item
+        example: nezafat-manzel
+      title:
+        type: string
+        maxLength: 100
+        description: Title of the skill
+        example: مکانیکی
+      created_at:
+        type: string
+        format: date-time
+        example: '2018-09-05T23:11'
+      updated_at:
+        type: string
+        format: date-time
+        example: '2018-09-06T23:11'
+      is_active:
+        type: boolean
+        example: true
+  CityInfo:
+    description: Provider city information
+    title: city
+    type: object
+    required:
+      - id
+      - slug
+      - title
+      - created_at
+      - is_active
+    properties:
+      id:
+        type: number
+        description: Unique identifier of the city
+        format: int32
+        example: 123
+      slug:
+        type: string
+        maxLength: 25
+        description: Alphanumeric url-valid string for natural accessing the item
+        example: tehran
+      title:
+        type: string
+        maxLength: 100
+        description: Title of the city
+        example: تهران
+      created_at:
+        type: string
+        format: date-time
+        example: '2018-09-05T23:11'
+      updated_at:
+        type: string
+        format: date-time
+        example: '2018-09-06T23:11'
+      is_active:
+        type: boolean
+        example: true
+  ZoneInfo:
+    description: Provider zone information
+    title: zone
+    type: object
+    required:
+      - id
+      - city_slug
+      - slug
+      - title
+      - created_at
+      - is_active
+    properties:
+      id:
+        type: number
+        description: Unique identifier of the zone
+        format: int32
+        example: 123
+      city_slug:
+        type: string
+        maxLength: 25
+        description: Alphanumeric url-valid string for natural accessing the item
+        example: tehran
+      city_title:
+        type: string
+        maxLength: 100
+        description: Title of the city
+        example: تهران
+      slug:
+        type: string
+        maxLength: 25
+        description: Alphanumeric url-valid string for natural accessing the item
+        example: pasdaran
+      title:
+        type: string
+        maxLength: 100
+        description: Title of the zone
+        example: پاسداران
+      created_at:
+        type: string
+        format: date-time
+        example: '2018-09-05T23:11'
+      updated_at:
+        type: string
+        format: date-time
+        example: '2018-09-06T23:11'
+      is_active:
+        type: boolean
+        example: true
+  ProvideInfo:
+    description: Provide information
+    title: provide
+    type: object
+    required:
+      - city_slug
+      - service_slug
+      - start_at
+      - finish_at
+      - created_at
+      - is_active
+    properties:
+      id:
+        type: number
+        description: Unique identifier of the provide
+        format: int32
+        example: 123
+      city_slug:
+        type: string
+        maxLength: 25
+        description: Alphanumeric url-valid string for natural accessing the item
+        example: tehran
+      city_title:
+        type: string
+        maxLength: 100
+        description: Title of the city
+        example: تهران
+      service_slug:
+        type: string
+        maxLength: 25
+        description: Alphanumeric url-valid string for natural accessing the item
+        example: tehran
+      service_title:
+        type: string
+        maxLength: 100
+        description: Title of the service
+        example: نظافت منزل
+      gender:
+        type: string
+        maxLength: 25
+        description: 'Service provide on this humans gender Unknown, Male, Female'
+        example: MALE
+      start_at:
+        type: string
+        format: 'time-hour:time-minute:time-second'
+        description: Start service providing
+        example: '11:00:00'
+      finish_at:
+        type: string
+        format: 'time-hour:time-minute:time-second'
+        description: Finish service providing
+        example: '19:00:00'
+      created_at:
+        type: string
+        format: date-time
+        example: '2018-09-05T23:11'
+      updated_at:
+        type: string
+        format: date-time
+        example: '2018-09-06T23:11'
+      is_active:
+        type: boolean
+        example: true
+  CategoryInfo:
+    description: Category information
+    title: Category
+    type: object
+    properties:
+      id:
+        type: number
+        description: Unique identifier of the category
+        format: int32
+        example: 123
+      slug:
+        type: string
+        maxLength: 25
+        description: Alphanumeric url-valid string for natural accessing the item
+        example: nezafat-manzel
+      title:
+        type: string
+        maxLength: 100
+        description: Title of the category
+        example: نظافت منزل
+      created_at:
+        type: string
+        format: date-time
+        example: '2018-09-05T23:11'
+      updated_at:
+        type: string
+        format: date-time
+        example: '2018-09-06T23:11'
+      is_active:
+        type: boolean
+        example: true
+      parent_category:
+        type: string
+        maxLength: 25
+        description: Slug of parent category
+        example: decoration

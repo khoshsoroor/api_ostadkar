@@ -1,0 +1,32 @@
+/services:
+  $ref: './services.yml'
+
+/services/{slug}:
+  $ref: './services_slug_.yml'
+
+/skills:
+  $ref: './skills.yml'
+
+/skills/{slug}:
+  $ref: './skills_slug_.yml'
+
+/cities:
+  $ref: './cities.yml'
+
+/cities/{slug}:
+  $ref: './cities_slug_.yml'
+
+/zones:
+  $ref: './zones.yml'
+
+/zones/{slug}:
+  $ref: './zones_slug_.yml'
+
+/provides:
+  $ref: './providers.yml'
+
+/provides/{slug}:
+  $ref: './providers_slug_.yml'
+
+/categories:
+  $ref: './categories.yml'

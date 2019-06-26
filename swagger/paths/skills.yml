@@ -1,0 +1,58 @@
+get:
+  tags:
+    - operators
+    - providers
+  summary: List Skills
+  operationId: listSkills
+  description: Returns list of skills available
+  produces:
+    - application/json
+    - application/msgpack
+    - application/cbor
+
+  parameters:
+    - in: header
+      name: Accept
+      type: string
+      required: false
+  responses:
+    200:
+      description: list of skills with attributes
+      schema:
+        type: array
+        items:
+          $ref: '#/definitions/SkillInfo'
+    404:
+      description: No skill found
+post:
+  tags:
+    - operators
+  summary: Registers new skill
+  operationId: registerSkill
+  description: Registers an skill with its data
+  consumes:
+    - application/json
+    - application/msgpack
+    - application/cbor
+  produces:
+    - application/json
+    - application/msgpack
+    - application/cbor
+  parameters:
+    - in: body
+      required: true
+      name: skillInfo
+      schema:
+        $ref: '#/definitions/SkillInfo'
+  responses:
+    201:
+      description: Skill registered successfully
+      schema:
+        type: object
+        properties:
+          sid:
+            type: string
+    400:
+      description: Skill data invalid
+      schema:
+        $ref: '#/definitions/ErrorInfo'

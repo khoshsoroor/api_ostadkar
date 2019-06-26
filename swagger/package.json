@@ -1,0 +1,13 @@
+{
+  "name": "swagger",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "build": "swagger-merger -i index.yml -o ../swagger.yml"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "swagger-merger": "^1.4.3"
+  }
+}

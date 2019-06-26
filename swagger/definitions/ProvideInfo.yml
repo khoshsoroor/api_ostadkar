@@ -1,0 +1,63 @@
+description: Provide information
+title: provide
+type: object
+required:
+  - city_slug
+  - service_slug
+  - start_at
+  - finish_at
+  - created_at
+  - is_active
+properties:
+  id:
+    type: number
+    description: Unique identifier of the provide
+    format: int32
+    example: 123
+  city_slug:
+    type: string
+    maxLength: 25
+    description: Alphanumeric url-valid string for natural accessing the item
+    example: tehran
+  city_title:
+    type: string
+    maxLength: 100
+    description: Title of the city
+    example: تهران
+  service_slug:
+    type: string
+    maxLength: 25
+    description: Alphanumeric url-valid string for natural accessing the item
+    example: tehran
+  service_title:
+    type: string
+    maxLength: 100
+    description: Title of the service
+    example: نظافت منزل
+  gender:
+    type: string
+    maxLength: 25
+    description: Service provide on this humans gender Unknown, Male, Female
+    example: MALE
+  start_at:
+    type: string
+    format: "time-hour:time-minute:time-second"
+    description: Start service providing
+    example: "11:00:00"
+  finish_at:
+    type: string
+    format: "time-hour:time-minute:time-second"
+    description: Finish service providing
+    example: "19:00:00"
+  created_at:
+    type: string
+    format: date-time
+    example: 2018-09-05T23:11
+  updated_at:
+    type: string
+    format: date-time
+    example: 2018-09-06T23:11
+  is_active:
+    type: boolean
+    example: true
+

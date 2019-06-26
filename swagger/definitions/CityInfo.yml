@@ -1,0 +1,36 @@
+description: Provider city information
+title: city
+type: object
+required:
+  - id
+  - slug
+  - title
+  - created_at
+  - is_active
+properties:
+  id:
+    type: number
+    description: Unique identifier of the city
+    format: int32
+    example: 123
+  slug:
+    type: string
+    maxLength: 25
+    description: Alphanumeric url-valid string for natural accessing the item
+    example: tehran
+  title:
+    type: string
+    maxLength: 100
+    description: Title of the city
+    example: تهران
+  created_at:
+    type: string
+    format: date-time
+    example: 2018-09-05T23:11
+  updated_at:
+    type: string
+    format: date-time
+    example: 2018-09-06T23:11
+  is_active:
+    type: boolean
+    example: true

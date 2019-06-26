@@ -1,0 +1,81 @@
+get:
+  tags:
+    - customers
+    - providers
+    - operators
+  summary: Gets some specific provide details
+  operationId: getProvideInfo
+  description: Gets a tracking code and return corresponding provide details
+  produces:
+    - application/json
+    - application/msgpack
+    - application/cbor
+  parameters:
+    - in: path
+      required: true
+      name: slug
+      type: string
+  responses:
+    200:
+      description: Returns provide with specified slug
+      schema:
+        $ref: '#/definitions/ProvideInfo'
+    404:
+      description: No provide exists with this slug
+      schema:
+        $ref: '#/definitions/ErrorInfo'
+put:
+  tags:
+    - operators
+  summary: Modifies speicified skill information
+  operationId: editProvideInfo
+  description: Modifies sefvice name, description and attributes.
+  produces:
+    - application/json
+    - application/msgpack
+    - application/cbor
+  consumes:
+    - application/json
+    - application/msgpack
+    - application/cbor
+  parameters:
+    - in: path
+      name: slug
+      required: true
+      type: string
+    - in: body
+      name: skillInfo
+      required: true
+      schema:
+        $ref: '#/definitions/ProvideInfo'
+  responses:
+    204:
+      description: Successfully modified the skill
+    400:
+      description: Invalid skill data
+      schema:
+        $ref: '#/definitions/ErrorInfo'
+    404:
+      description: There is no skill with this slug
+delete:
+  tags:
+    - operators
+  summary: Disables a single skill specified by slug
+  operationId: disableProvide
+  description: Cancels a specific skill with slug
+  parameters:
+    - in: path
+      name: slug
+      required: true
+      type: string
+  responses:
+    204:
+      description: Successfully disabled the skill
+    404:
+      description: The is no skill with this slug.
+      schema:
+        $ref: '#/definitions/ErrorInfo'
+    406:
+      description: This skill could not be disabled.
+      schema:
+        $ref: '#/definitions/ErrorInfo'

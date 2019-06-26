@@ -1,0 +1,20 @@
+ErrorInfo:
+  $ref: './ErrorInfo.yml'
+
+ServiceInfo:
+  $ref: './ServiceInfo.yml'
+
+SkillInfo:
+  $ref: './SkillInfo.yml'
+
+CityInfo:
+  $ref: './CityInfo.yml'
+
+ZoneInfo:
+  $ref: './ZoneInfo.yml'
+
+ProvideInfo:
+  $ref: './ProvideInfo.yml'
+
+CategoryInfo:
+  $ref: './CategoryInfo.yml'

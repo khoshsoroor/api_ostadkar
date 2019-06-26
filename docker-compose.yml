@@ -1,0 +1,31 @@
+version: '3'
+
+networks: 
+  backbone:
+
+services:
+  postgres:
+    image: postgres:11
+    environment:
+      POSTGRES_DB: "ostadkar"
+      POSTGRES_PASSWORD: 'postgres'
+      POSTGRES_USER: 'postgres'
+    volumes:
+      - .docker/postgres/data:/var/lib/postgresql/data      
+    networks: 
+      - backbone
+    ports:
+      - 5432:5432
+
+  pgadmin:
+    image: dpage/pgadmin4:latest  
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "admin@ostadkar.pro"
+      PGADMIN_DEFAULT_PASSWORD: "123456"
+    networks: 
+      - backbone
+    ports:
+      - "8080:80"
+    depends_on:
+      - postgres
+

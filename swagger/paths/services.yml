@@ -1,0 +1,58 @@
+get:
+  tags:
+    - public
+  summary: List Services
+  operationId: listServices
+  description: Returns list of services available
+  produces:
+    - application/json
+    - application/msgpack
+    - application/cbor
+
+  parameters:
+    - in: header
+      name: Accept
+      type: string
+      required: false
+  responses:
+    200:
+      description: list of services with attributes
+      schema:
+        type: array
+        items:
+          $ref: '#/definitions/ServiceInfo'
+    404:
+      description: No service found
+
+post:
+  tags:
+    - operators
+  summary: Registers new service
+  operationId: registerService
+  description: Registers an service with its data
+  consumes:
+    - application/json
+    - application/msgpack
+    - application/cbor
+  produces:
+    - application/json
+    - application/msgpack
+    - application/cbor
+  parameters:
+    - in: body
+      required: true
+      name: serviceInfo
+      schema:
+        $ref: '#/definitions/ServiceInfo'
+  responses:
+    201:
+      description: Service registered successfully
+      schema:
+        type: object
+        properties:
+          sid:
+            type: string
+    400:
+      description: Service data invalid
+      schema:
+        $ref: '#/definitions/ErrorInfo'

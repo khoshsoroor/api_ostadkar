@@ -1,0 +1,14 @@
+title: error
+description: Error description
+type: object
+required:
+  - code
+  - message
+properties:
+  code:
+    type: number
+    format: integer
+  message:
+    type: string
+  uri:
+    type: string

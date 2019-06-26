@@ -1,0 +1,21 @@
+swagger: '2.0'
+
+schemes:
+  - http
+
+host: localhost:5000
+
+info:
+  $ref: './info.yml'
+
+tags:
+  - name: operators
+    description: Secured Admin/Operator calls
+  - name: public
+    description: Operations available to everyone
+
+paths:
+  $ref: './paths/index.yml'
+
+definitions:
+  $ref: './definitions/index.yml'

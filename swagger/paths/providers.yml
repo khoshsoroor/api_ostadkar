@@ -1,0 +1,58 @@
+get:
+  tags:
+    - operators
+    - providers
+  summary: List Provides
+  operationId: listProvides
+  description: Returns list of provides available
+  produces:
+    - application/json
+    - application/msgpack
+    - application/cbor
+
+  parameters:
+    - in: header
+      name: Accept
+      type: string
+      required: false
+  responses:
+    200:
+      description: list of provides with attributes
+      schema:
+        type: array
+        items:
+          $ref: '#/definitions/ProvideInfo'
+    404:
+      description: No provide found
+post:
+  tags:
+    - operators
+  summary: Registers new provide
+  operationId: registerProvide
+  description: Registers an provide with its data
+  consumes:
+    - application/json
+    - application/msgpack
+    - application/cbor
+  produces:
+    - application/json
+    - application/msgpack
+    - application/cbor
+  parameters:
+    - in: body
+      required: true
+      name: provideInfo
+      schema:
+        $ref: '#/definitions/ProvideInfo'
+  responses:
+    201:
+      description: Provide registered successfully
+      schema:
+        type: object
+        properties:
+          sid:
+            type: string
+    400:
+      description: Provide data invalid
+      schema:
+        $ref: '#/definitions/ErrorInfo'

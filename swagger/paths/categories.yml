@@ -1,0 +1,25 @@
+get:
+  tags:
+    - public
+  summary: List Categories
+  operationId: listCategories
+  description: Returns list of categories available
+  produces:
+    - application/json
+    - application/msgpack
+    - application/cbor
+
+  parameters:
+    - in: header
+      name: Accept
+      type: string
+      required: false
+  responses:
+    200:
+      description: list of categories with attributes
+      schema:
+        type: array
+        items:
+          $ref: '#/definitions/CategoryInfo'
+    404:
+      description: No category found

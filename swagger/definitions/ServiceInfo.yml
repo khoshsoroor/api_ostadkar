@@ -1,0 +1,36 @@
+description: Provider service information
+title: service
+type: object
+required:
+  - id
+  - slug
+  - title
+  - created_at
+  - is_active
+properties:
+  id:
+    type: number
+    description: Unique identifier of the service
+    format: int32
+    example: 123
+  slug:
+    type: string
+    maxLength: 25
+    description: Alphanumeric url-valid string for natural accessing the item
+    example: nezafat-manzel
+  title:
+    type: string
+    maxLength: 160
+    description: Title of the service
+    example: نظافت منزل
+  created_at:
+    type: string
+    format: date-time
+    example: 2018-09-05T23:11
+  updated_at:
+    type: string
+    format: date-time
+    example: 2018-09-06T23:11
+  is_active:
+    type: boolean
+    example: true

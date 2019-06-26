@@ -1,0 +1,82 @@
+get:
+  tags:
+    - public
+  summary: Gets some specific service details
+  operationId: getServiceInfo
+  description: Gets a tracking code and return corresponding service details
+  produces:
+    - application/json
+    - application/msgpack
+    - application/cbor
+  parameters:
+    - in: path
+      required: true
+      name: slug
+      type: string
+  responses:
+    200:
+      description: Returns service with specified slug
+      schema:
+        $ref: '#/definitions/ServiceInfo'
+    404:
+      description: No service exists with this slug
+      schema:
+        $ref: '#/definitions/ErrorInfo'
+
+put:
+  tags:
+    - operators
+  summary: Modifies speicified service information
+  operationId: editServiceInfo
+  description: Modifies sefvice name, description and attributes.
+  produces:
+    - application/json
+    - application/msgpack
+    - application/cbor
+  consumes:
+    - application/json
+    - application/msgpack
+    - application/cbor
+  parameters:
+    - in: path
+      name: slug
+      required: true
+      type: string
+      format: uuid
+    - in: body
+      name: serviceInfo
+      required: true
+      schema:
+        $ref: '#/definitions/ServiceInfo'
+  responses:
+    204:
+      description: Successfully modified the service
+    400:
+      description: Invalid service data
+      schema:
+        $ref: '#/definitions/ErrorInfo'
+    404:
+      description: There is no service with this slug
+
+delete:
+  tags:
+    - operators
+  summary: Disables a single service specified by slug
+  operationId: disableService
+  description: Cancels a specific service with slug
+  parameters:
+    - in: path
+      name: slug
+      required: true
+      type: string
+  responses:
+    204:
+      description: Successfully disabled the service
+    404:
+      description: The is no service with this slug.
+      schema:
+        $ref: '#/definitions/ErrorInfo'
+    406:
+      description: This service could not be disabled.
+      schema:
+        $ref: '#/definitions/ErrorInfo'

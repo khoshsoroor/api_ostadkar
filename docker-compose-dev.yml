@@ -1,0 +1,51 @@
+version: '3'
+
+networks:
+  backbone:
+
+services:
+  postgres:
+    image: postgres:11
+    environment:
+      POSTGRES_DB: "ostadkar"
+      POSTGRES_PASSWORD: 'postgres'
+      POSTGRES_USER: 'postgres'
+    volumes:
+      - .docker/postgres/data:/var/lib/postgresql/data
+    networks:
+      - backbone
+    ports:
+      - 5432:5432
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "admin@ostadkar.pro"
+      PGADMIN_DEFAULT_PASSWORD: "123456"
+    networks:
+      - backbone
+    ports:
+      - "8080:80"
+    depends_on:
+      - postgres
+
+  api:
+    build: .
+    environment:
+      SQLALCHEMY_DATABASE_URI: "postgresql://postgres:postgres@postgres:5432/ostadkar"
+      SQLALCHEMY_TRACK_MODIFICATIONS: "false"
+      SQLALCHEMY_COMMIT_ON_TEARDOWN: "true"
+      SQLALCHEMY_POOL_RECYCLE: 1800
+      LOG_LEVEL: "DEBUG"
+      TIME_SERVER: "europe.pool.ntp.org"
+      DEFAULT_PAGE_SIZE: 10
+      MAX_PAGE_SIZE: 100
+      FLASK_ENV: "development"
+    networks:
+      - backbone
+    ports:
+      - "8001:5000"
+    restart: "on-failure"
+    depends_on:
+      - postgres
+

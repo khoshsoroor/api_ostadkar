@@ -1,0 +1,82 @@
+get:
+  tags:
+    - public
+  summary: Gets some specific category details
+  operationId: getCategoryInfo
+  description: Gets a slug and return corresponding category details
+  produces:
+    - application/json
+    - application/msgpack
+    - application/cbor
+  parameters:
+    - in: path
+      required: true
+      name: slug
+      type: string
+  responses:
+    200:
+      description: Returns categroy with specified slug
+      schema:
+        $ref: '#/definitions/CategoryInfo'
+    404:
+      description: No category exists with this slug
+      schema:
+        $ref: '#/definitions/ErrorInfo'
+
+put:
+  tags:
+    - operators
+  summary: Modifies speicified category information
+  operationId: editCategoryInfo
+  description: Modifies category name, description and attributes.
+  produces:
+    - application/json
+    - application/msgpack
+    - application/cbor
+  consumes:
+    - application/json
+    - application/msgpack
+    - application/cbor
+  parameters:
+    - in: path
+      name: slug
+      required: true
+      type: string
+      format: slug
+    - in: body
+      name: categoryInfo
+      required: true
+      schema:
+        $ref: '#/definitions/CategoryInfo'
+  responses:
+    204:
+      description: Successfully modified the category
+    400:
+      description: Invalid category data
+      schema:
+        $ref: '#/definitions/ErrorInfo'
+    404:
+      description: There is no category with this slug
+
+delete:
+  tags:
+    - operators
+  summary: Disables a single category specified by slug
+  operationId: disableCategory
+  description: Cancels a specific category with slug
+  parameters:
+    - in: path
+      name: slug
+      required: true
+      type: string
+  responses:
+    204:
+      description: Successfully disabled the category
+    404:
+      description: The is no category with this slug.
+      schema:
+        $ref: '#/definitions/ErrorInfo'
+    406:
+      description: This category could not be disabled.
+      schema:
+        $ref: '#/definitions/ErrorInfo'

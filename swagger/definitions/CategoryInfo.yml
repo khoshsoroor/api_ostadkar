@@ -1,0 +1,39 @@
+description: Category information
+title: Category
+type: object
+required:
+  - id
+  - slug
+  - title
+properties:
+  id:
+    type: number
+    description: Unique identifier of the category
+    format: int32
+    example: 123
+  slug:
+    type: string
+    maxLength: 25
+    description: Alphanumeric url-valid string for natural accessing the item
+    example: nezafat-manzel
+  title:
+    type: string
+    maxLength: 100
+    description: Title of the category
+    example: نظافت منزل
+  created_at:
+    type: string
+    format: date-time
+    example: 2018-09-05T23:11
+  updated_at:
+    type: string
+    format: date-time
+    example: 2018-09-06T23:11
+  is_active:
+    type: boolean
+    example: true
+  parent_category:
+    type: string
+    maxLength: 25
+    description: Slug of parent category
+    example: decoration
